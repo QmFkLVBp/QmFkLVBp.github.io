@@ -139,6 +139,36 @@ a:hover {
     height: 40px;
 }
 
+.certificate-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.cert-link {
+    display: inline-block;
+    background-color: var(--bg-main);
+    color: var(--text-secondary);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.cert-link:hover {
+    background-color: var(--accent-blue);
+    color: var(--bg-main);
+    border-color: var(--accent-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    text-decoration: none;
+}
+
 .fade-in-section {
     opacity: 0;
     transform: translateY(20px);
