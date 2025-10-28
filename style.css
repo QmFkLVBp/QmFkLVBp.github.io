@@ -1,111 +1,151 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+:root {
+    --bg-main: #2E3440;
+    --bg-container: #3B4252;
+    --border-color: #4C566A;
+    --text-primary: #ECEFF4;
+    --text-secondary: #D8DEE9;
+    --text-quote: #A3BADC;
+    --accent-blue: #81A1C1;
+    --accent-blue-bright: #88C0D0;
 }
 
 body {
-    font-family: 'Roboto Mono', monospace;
-    background-color: #2E3440;
-    color: #D8DEE9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 2rem;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+    padding: 2rem 1rem;
 }
 
-.card {
-    background-color: #3B4252;
-    border: 1px solid #4C566A;
-    border-radius: 12px;
+.readme-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: var(--bg-container);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    max-width: 650px;
-    width: 100%;
-    padding: 3rem;
-    text-align: center;
-    
-    animation: fadeIn 1s ease-out;
+    overflow: hidden;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+.readme-content {
+    padding: 2rem 3rem;
+}
+
+@media (max-width: 768px) {
+    .readme-content {
+        padding: 1.5rem;
     }
 }
 
-.avatar {
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    border: 4px solid #88C0D0;
-    margin-bottom: 1.5rem;
-    object-fit: cover;
+h1, h2, h3, h4 {
+    font-family: 'Roboto Mono', monospace;
+    color: var(--text-primary);
+    margin-top: 2rem;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.4em;
+    border-bottom: 2px solid var(--border-color);
 }
 
-h1 {
-    color: #ECEFF4;
-    font-size: 2.2rem;
-    font-weight: 700;
+h2 { font-size: 1.75rem; }
+h3 { font-size: 1.4rem; border-bottom: none; }
+h3 img { vertical-align: middle; }
+
+p {
+    margin-bottom: 1rem;
+}
+
+strong {
+    color: var(--accent-blue-bright);
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+li {
+    position: relative;
+    padding-left: 1.5rem;
     margin-bottom: 0.5rem;
 }
 
-.title {
-    color: #88C0D0;
-    font-size: 1.25rem;
+li::before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--accent-blue-bright);
+    font-size: 1.2em;
+}
+
+ul li:nth-child(1)::before { content: '🌱'; }
+ul li:nth-child(2)::before { content: '🛠️'; }
+ul li:nth-child(3)::before { content: '📫'; }
+ul li:nth-child(4)::before { content: '☕'; }
+
+
+blockquote {
+    font-family: 'Roboto Mono', monospace;
+    border-left: 4px solid var(--accent-blue);
+    padding: 0.5rem 1rem;
+    margin: 1.5rem 0;
+    background-color: var(--bg-main);
+    color: var(--text-quote);
+    font-style: italic;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+hr {
+    height: 1px;
+    background-color: var(--border-color);
+    border: 0;
+    margin: 2.5rem 0;
+}
+
+a {
+    color: var(--accent-blue);
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+a:hover {
+    color: var(--accent-blue-bright);
+    text-decoration: underline;
+}
+
+.badges-container {
+    text-align: center;
     margin-bottom: 1.5rem;
-    font-weight: 500;
-}
-
-.description {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: #D8DEE9;
-    margin-bottom: 2.5rem;
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.links {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 1rem;
-}
-
-.links a {
-    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    background-color: #434C5E;
-    color: #ECEFF4;
-    text-decoration: none;
-    padding: 0.8rem 1.5rem;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
+    gap: 0.5rem;
 }
 
-.links a i {
-    margin-right: 0.75rem;
-    color: #81A1C1;
-    transition: color 0.3s ease;
+.badges-container img {
+    margin: 0.25rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.links a:hover {
-    background-color: #81A1C1;
-    color: #2E3440;
-    transform: translateY(-4px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+.badges-container a:hover img {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.links a:hover i {
-    color: #2E3440;
+.platform-badge {
+    height: 40px;
+}
+
+.fade-in-section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in-section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
 }
