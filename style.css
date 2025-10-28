@@ -7,24 +7,22 @@
     --text-quote: #A3BADC;
     --accent-blue: #81A1C1;
     --accent-blue-bright: #88C0D0;
-
-    /* Dither specific colors - можно настроить */
-    --dither-color-1: rgba(46, 52, 64, 0.9); /* Чуть прозрачнее --bg-main */
-    --dither-color-2: rgba(59, 66, 82, 0.9); /* Чуть прозрачнее --bg-container */
-    --dither-size: 2px; /* Размер пикселя для дизера */
+    
+    --dither-color-1: rgba(46, 52, 64, 0.95);
+    --dither-color-2: rgba(59, 66, 82, 0.9);
+    --dither-size: 2px;
 }
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: var(--bg-main);
     color: var(--text-secondary);
     line-height: 1.6;
     margin: 0;
     padding: 2rem 1rem;
-    overflow-x: hidden; /* Запобігає горизонтальному скролу від дізера */
+    overflow-x: hidden;
+    background-color: var(--bg-main);
 }
 
-/* Dither ефект для фону */
 .dither-background {
     background: 
         repeating-conic-gradient(
@@ -33,24 +31,21 @@ body {
             var(--dither-color-2) 0% 50%
         ) 
         0 0 / var(--dither-size) var(--dither-size);
-    /* Додаємо контраст, щоб "пікселі" були чіткішими */
-    filter: contrast(1.1); 
-    background-attachment: fixed; /* Щоб фон не прокручувався разом з контентом */
+    filter: contrast(1.1);
+    background-attachment: fixed;
 }
-
 
 .readme-container {
     max-width: 900px;
     margin: 0 auto;
     background-color: var(--bg-container);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    border-radius: 0;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     overflow: hidden;
-    position: relative; /* Для ефекту зернистості всередині */
+    position: relative;
 }
 
-/* Ефект зернистості всередині контейнера */
 .readme-container::before {
     content: '';
     position: absolute;
@@ -59,15 +54,16 @@ body {
     width: 100%;
     height: 100%;
     background-image: url('data:image/svg+xml;base64,PHN2ZyB2aWR0aD0iNCIgaGVpZ2h0PSI0IiB2aWV3Qm94PSIwIDAgNCA0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9IiM5ZTRiNWUiIGZpbGwtb3BhY2l0eT0iMC4xIiBvcGFjaXR5PSIwLjMiPjxwYXRoIGQ9Ik0xIDBMNCAzVjRIM1YxSDBWMUw1IDYgNCA1IDMgNFY0SDJWN0gxVjJIMHoiLz48L2c+PC9zdmc+');
-    background-size: 4px 4px;
-    opacity: 0.1; /* Прозорість зернистості */
-    pointer-events: none; /* Щоб не блокувати взаємодію з елементами */
+    background-size: 3px 3px;
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: 1;
 }
 
 .readme-content {
     padding: 2rem 3rem;
-    position: relative; /* Щоб контент був над зернистістю */
-    z-index: 1;
+    position: relative;
+    z-index: 2;
 }
 
 @media (max-width: 768px) {
@@ -85,18 +81,20 @@ h1, h2, h3, h4 {
     border-bottom: 2px solid var(--border-color);
 }
 
-/* Опціонально: Піксельний шрифт для заголовків або певних блоків */
-/*
 h2 {
-    font-family: 'Press Start 2P', cursive; 
-    font-size: 1.2rem;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.25rem;
     text-transform: uppercase;
+    color: var(--accent-blue-bright);
 }
-*/
 
-h2 { font-size: 1.75rem; }
-h3 { font-size: 1.4rem; border-bottom: none; }
-h3 img { vertical-align: middle; }
+h3 { 
+    font-size: 1.4rem; 
+    border-bottom: none; 
+}
+h3 img { 
+    vertical-align: middle; 
+}
 
 p {
     margin-bottom: 1rem;
@@ -130,7 +128,6 @@ ul li:nth-child(1)::before { content: '🌱'; }
 ul li:nth-child(2)::before { content: '🛠️'; }
 ul li:nth-child(3)::before { content: '📫'; }
 ul li:nth-child(4)::before { content: '☕'; }
-
 
 blockquote {
     font-family: 'Roboto Mono', monospace;
@@ -175,6 +172,7 @@ a:hover {
 .badges-container img {
     margin: 0.25rem;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 4px;
 }
 
 .badges-container a:hover img {
@@ -199,9 +197,9 @@ a:hover {
     background-color: var(--bg-main);
     color: var(--text-secondary);
     font-family: 'Roboto Mono', monospace;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     padding: 0.5rem 1rem;
-    border-radius: 6px;
+    border-radius: 4px;
     border: 1px solid var(--border-color);
     text-decoration: none;
     transition: all 0.2s ease;
