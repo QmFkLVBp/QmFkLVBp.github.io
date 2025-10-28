@@ -7,6 +7,11 @@
     --text-quote: #A3BADC;
     --accent-blue: #81A1C1;
     --accent-blue-bright: #88C0D0;
+
+    /* Dither specific colors - можно настроить */
+    --dither-color-1: rgba(46, 52, 64, 0.9); /* Чуть прозрачнее --bg-main */
+    --dither-color-2: rgba(59, 66, 82, 0.9); /* Чуть прозрачнее --bg-container */
+    --dither-size: 2px; /* Размер пикселя для дизера */
 }
 
 body {
@@ -16,7 +21,23 @@ body {
     line-height: 1.6;
     margin: 0;
     padding: 2rem 1rem;
+    overflow-x: hidden; /* Запобігає горизонтальному скролу від дізера */
 }
+
+/* Dither ефект для фону */
+.dither-background {
+    background: 
+        repeating-conic-gradient(
+            from 45deg, 
+            var(--dither-color-1) 0% 25%, 
+            var(--dither-color-2) 0% 50%
+        ) 
+        0 0 / var(--dither-size) var(--dither-size);
+    /* Додаємо контраст, щоб "пікселі" були чіткішими */
+    filter: contrast(1.1); 
+    background-attachment: fixed; /* Щоб фон не прокручувався разом з контентом */
+}
+
 
 .readme-container {
     max-width: 900px;
@@ -26,10 +47,27 @@ body {
     border-radius: 8px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     overflow: hidden;
+    position: relative; /* Для ефекту зернистості всередині */
+}
+
+/* Ефект зернистості всередині контейнера */
+.readme-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB2aWR0aD0iNCIgaGVpZ2h0PSI0IiB2aWV3Qm94PSIwIDAgNCA0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9IiM5ZTRiNWUiIGZpbGwtb3BhY2l0eT0iMC4xIiBvcGFjaXR5PSIwLjMiPjxwYXRoIGQ9Ik0xIDBMNCAzVjRIM1YxSDBWMUw1IDYgNCA1IDMgNFY0SDJWN0gxVjJIMHoiLz48L2c+PC9zdmc+');
+    background-size: 4px 4px;
+    opacity: 0.1; /* Прозорість зернистості */
+    pointer-events: none; /* Щоб не блокувати взаємодію з елементами */
 }
 
 .readme-content {
     padding: 2rem 3rem;
+    position: relative; /* Щоб контент був над зернистістю */
+    z-index: 1;
 }
 
 @media (max-width: 768px) {
@@ -46,6 +84,15 @@ h1, h2, h3, h4 {
     padding-bottom: 0.4em;
     border-bottom: 2px solid var(--border-color);
 }
+
+/* Опціонально: Піксельний шрифт для заголовків або певних блоків */
+/*
+h2 {
+    font-family: 'Press Start 2P', cursive; 
+    font-size: 1.2rem;
+    text-transform: uppercase;
+}
+*/
 
 h2 { font-size: 1.75rem; }
 h3 { font-size: 1.4rem; border-bottom: none; }
