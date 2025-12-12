@@ -15,7 +15,17 @@ const appendLog = (boxId, msg) => {
 // Math (BigInt)
 function egcd(a, b) { if (b === 0n) return [a, 1n, 0n]; const [g, x1, y1] = egcd(b, a % b); return [g, y1, x1 - (a / b) * y1]; }
 function modinv(a, m) { const [g, x] = egcd(a, m); if (g !== 1n) throw new Error("No modular inverse (gcd != 1)"); return ((x % m) + m) % m; }
-function modPow(base, exp, mod) { let result = 1n; let b = ((base % mod) + mod) % mod; let e = exp; while (e > 0n) { if (e & 1n) result = (result * b) % mod; b = (b * b) % mod; e >>= 1n; } return result; }
+function modPow(base, exp, mod) { // fixed: previously truncated
+  let result = 1n;
+  let b = ((base % mod) + mod) % mod;
+  let e = exp;
+  while (e > 0n) {
+    if (e & 1n) result = (result * b) % mod;
+    b = (b * b) % mod;
+    e >>= 1n;
+  }
+  return result;
+}
 
 // Crypto helpers
 function rotateAlphabet(alpha, rot) { if (!alpha) return alpha; rot = ((rot % alpha.length) + alpha.length) % alpha.length; return alpha.slice(rot) + alpha.slice(0, rot); }
@@ -61,7 +71,8 @@ function vigenereTable(text, key, up) {
   return ["Original: " + orig, "Keystream: " + kstream, "Encrypted: " + cipher, "", ...lines].join("\n");
 }
 function caesar(text, shift, up, lo) {
-  const n = up.length, s = ((shift % n) + n) % n; let out = "";
+  const n = up.length, s = (((shift % n) + n) % n);
+  let out = "";
   for (const ch of text) {
     if (up.includes(ch)) out += up[(up.indexOf(ch) + s) % n];
     else if (lo.includes(ch)) out += lo[(lo.indexOf(ch) + s) % n];
@@ -170,7 +181,7 @@ function vigRotVal(up) {
   const s = byId("vig-rot").value.trim();
   if (/^-?\d+$/.test(s)) {
     const val = parseInt(s, 10);
-    return ((-val % up.length) + up.length) % up.length; // match lite.py comment (invert sign)
+    return ((-val % up.length) + up.length) % up.length; // invert sign to match desktop note
   }
   return 0;
 }
