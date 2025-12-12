@@ -1,0 +1,24 @@
+/* Layout for Cryptology page, matching your site’s aesthetic */
+.container { max-width: 1100px; margin: 0 auto; }
+.card { background: var(--bg-container); border: 2px solid var(--border-color); border-radius: 8px; padding: 12px; }
+.btn { background: var(--accent-blue); color: var(--bg-main); border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; }
+.btn:hover { opacity: 0.9; }
+
+.app-grid { display: grid; grid-template-columns: 260px 1fr; gap: 12px; min-height: calc(100vh - 64px); }
+.nav { padding: 12px; }
+.logo-holder img { max-width: 220px; }
+.nav .nav-btn { width: 100%; margin: 6px 0; padding: 10px; background: var(--bg-main); color: var(--text-secondary); border: 1px solid var(--border-color); cursor: pointer; border-radius: 6px; }
+.nav .nav-btn:hover { background: var(--bg-container); }
+.page { padding: 12px; border-radius: 8px; }
+.row { display: flex; gap: 12px; flex-wrap: wrap; margin: 8px 0; }
+label { display: flex; align-items: center; gap: 6px; }
+input, select, textarea { background: var(--bg-main); color: var(--text-secondary); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px; }
+textarea.box { width: 100%; }
+h2, h3 { margin: 8px 0; color: var(--text-primary); }
+
+/* Mobile */
+@media (max-width: 900px) {
+  .app-grid { grid-template-columns: 1fr; }
+  .nav { order: 2; }
+  main { order: 1; }
+}
