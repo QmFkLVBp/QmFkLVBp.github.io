@@ -1,4 +1,4 @@
-// Global theme toggle for all pages
+// Global theme toggle inverting brightness while preserving hues
 (function () {
   const KEY = "site-theme";
   function applyTheme(theme) {
