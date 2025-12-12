@@ -1,15 +1,15 @@
-// Same logic as before, styled to your index palette/classes and preventing invisible text.
+// Full functionality: RSA, Polybius, Vigenère (with ROT and table), Caesar; visible by default.
 
-const APP_VERSION = "Lite-1.7.2-compact";
 const EN_UP = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const EN_LO = "abcdefghijklmnopqrstuvwxyz";
 const UA_UP = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ";
 const UA_LO = "абвгґдеєжзиіїйклмнопруфхцчшщьюя";
 
+// Helpers
 const byId = (id) => document.getElementById(id);
 const appendLog = (boxId, msg) => {
   const el = byId(boxId);
-  el.value = (el.value ? el.value + "\n" : "") + msg;
+  if (el) el.value = (el.value ? el.value + "\n" : "") + msg;
 };
 
 // Math (BigInt)
@@ -94,7 +94,6 @@ function rsaCompute() {
 }
 function rsaEncrypt() {
   try {
-    const paramsText = byId("rsa-params").value.trim();
     const p = requireInt(byId("rsa-p").value, "p");
     const q = requireInt(byId("rsa-q").value, "q");
     const N = p * q;
@@ -103,7 +102,8 @@ function rsaEncrypt() {
     const M = requireInt(byId("rsa-M").value, "M");
     if (!(0n <= M && M < N)) throw new Error(`M must be in [0, ${N - 1n}]`);
     const C = modPow(M, e, N);
-    byId("rsa-params").value = paramsText + `\n\nEncrypt:\nM = ${M}\nC = ${C}\n`;
+    const prev = byId("rsa-params").value.trim();
+    byId("rsa-params").value = prev + `\n\nEncrypt:\nM = ${M}\nC = ${C}\n`;
     appendLog("rsa-log", `Encryption done. C=${C}`);
   } catch (exc) {
     appendLog("rsa-log", `Encrypt error: ${exc.message ?? exc}`);
@@ -112,7 +112,6 @@ function rsaEncrypt() {
 }
 function rsaDecrypt() {
   try {
-    const paramsText = byId("rsa-params").value.trim();
     const p = requireInt(byId("rsa-p").value, "p");
     const q = requireInt(byId("rsa-q").value, "q");
     const N = p * q;
@@ -121,7 +120,8 @@ function rsaDecrypt() {
     const C = requireInt(byId("rsa-C").value, "C");
     if (!(0n <= C && C < N)) throw new Error(`C must be in [0, ${N - 1n}]`);
     const M = modPow(C, d, N);
-    byId("rsa-params").value = paramsText + `\n\nDecrypt:\nC = ${C}\nM = ${M}\n`;
+    const prev = byId("rsa-params").value.trim();
+    byId("rsa-params").value = prev + `\n\nDecrypt:\nC = ${C}\nM = ${M}\n`;
     appendLog("rsa-log", `Decryption done. M=${M}`);
   } catch (exc) {
     appendLog("rsa-log", `Decrypt error: ${exc.message ?? exc}`);
@@ -170,7 +170,7 @@ function vigRotVal(up) {
   const s = byId("vig-rot").value.trim();
   if (/^-?\d+$/.test(s)) {
     const val = parseInt(s, 10);
-    return ((-val % up.length) + up.length) % up.length;
+    return ((-val % up.length) + up.length) % up.length; // match lite.py comment (invert sign)
   }
   return 0;
 }
@@ -232,24 +232,24 @@ function cipRun(encrypt) {
   }
 }
 
-// Navigation bindings
+// Navigation
 function setupNav() {
   document.querySelectorAll("button[data-page]").forEach(btn => {
     btn.addEventListener("click", () => showPage(btn.dataset.page));
   });
-  showPage("rsa");
+  showPage("rsa"); // show something by default so page isn’t blank
 }
 function showPage(key) {
   document.querySelectorAll("section[id^='page-']").forEach(sec => sec.hidden = true);
-  const el = document.getElementById(`page-${key}`);
+  const el = byId(`page-${key}`);
   if (el) el.hidden = false;
 }
 
-// Actions bindings
+// Bind actions
 function bindActions() {
   byId("btn-rsa-compute").addEventListener("click", rsaCompute);
-  byId("btn-rsa-enc").addEventListener("click", rsaEncrypt);
-  byId("btn-rsa-dec").addEventListener("click", rsaDecrypt);
+  byId("btn-rsa-enc").addEventListener("click", () => rsaEncrypt());
+  byId("btn-rsa-dec").addEventListener("click", () => rsaDecrypt());
 
   byId("btn-poly-enc").addEventListener("click", () => polyRun(true));
   byId("btn-poly-dec").addEventListener("click", () => polyRun(false));
@@ -263,10 +263,10 @@ function bindActions() {
   byId("btn-cip-dec").addEventListener("click", () => cipRun(false));
 }
 
+// Init
 document.addEventListener("DOMContentLoaded", () => {
   setupNav();
   bindActions();
-
   appendLog("rsa-log", "Ready: RSA");
   appendLog("poly-log", "Ready: Polybius");
   appendLog("vig-log", "Ready: Vigenère");
