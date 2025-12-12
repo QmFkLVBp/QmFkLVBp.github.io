@@ -1,34 +1,28 @@
-// Full functionality: RSA, Polybius, Vigenère (with ROT and table), Caesar; visible by default.
+// Full functionality: RSA, Polybius, Vigenère (with ROT and nice HTML table), Caesar; visible by default and bug fixes.
 
 const EN_UP = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const EN_LO = "abcdefghijklmnopqrstuvwxyz";
 const UA_UP = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ";
 const UA_LO = "абвгґдеєжзиіїйклмнопруфхцчшщьюя";
 
-// Helpers
 const byId = (id) => document.getElementById(id);
-const appendLog = (boxId, msg) => {
-  const el = byId(boxId);
-  if (el) el.value = (el.value ? el.value + "\n" : "") + msg;
-};
+const appendLog = (boxId, msg) => { const el = byId(boxId); if (el) el.value = (el.value ? el.value + "\n" : "") + msg; };
 
 // Math (BigInt)
 function egcd(a, b) { if (b === 0n) return [a, 1n, 0n]; const [g, x1, y1] = egcd(b, a % b); return [g, y1, x1 - (a / b) * y1]; }
 function modinv(a, m) { const [g, x] = egcd(a, m); if (g !== 1n) throw new Error("No modular inverse (gcd != 1)"); return ((x % m) + m) % m; }
-function modPow(base, exp, mod) { // fixed: previously truncated
-  let result = 1n;
-  let b = ((base % mod) + mod) % mod;
-  let e = exp;
-  while (e > 0n) {
-    if (e & 1n) result = (result * b) % mod;
-    b = (b * b) % mod;
-    e >>= 1n;
-  }
+function modPow(base, exp, mod) {
+  let result = 1n, b = ((base % mod) + mod) % mod, e = exp;
+  while (e > 0n) { if (e & 1n) result = (result * b) % mod; b = (b * b) % mod; e >>= 1n; }
   return result;
 }
 
 // Crypto helpers
-function rotateAlphabet(alpha, rot) { if (!alpha) return alpha; rot = ((rot % alpha.length) + alpha.length) % alpha.length; return alpha.slice(rot) + alpha.slice(0, rot); }
+function rotateAlphabet(alpha, rot) {
+  if (!alpha) return alpha;
+  rot = ((rot % alpha.length) + alpha.length) % alpha.length;
+  return alpha.slice(rot) + alpha.slice(0, rot);
+}
 function vigenere(text, key, encrypt, up) {
   if (!key) throw new Error("Key required");
   const keyUp = key.toUpperCase();
@@ -45,38 +39,76 @@ function vigenere(text, key, encrypt, up) {
   }
   return out.join("");
 }
-function vigenereTable(text, key, up) {
+
+// Vigenère HTML table
+function vigenereRows(text, key, up) {
   if (!key) throw new Error("Key required");
   const keyUp = key.toUpperCase();
   for (const ch of keyUp) if (!up.includes(ch)) throw new Error("Key contains invalid characters");
-  const n = up.length; const ks = [], ct = [], shifts = []; let ki = 0;
-  for (const ch of text) {
+  const n = up.length;
+  const rows = [];
+  let ki = 0;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
     const cu = ch.toUpperCase();
     if (up.includes(cu)) {
-      const kch = keyUp[ki % keyUp.length], shift = up.indexOf(kch);
-      const encPos = (up.indexOf(cu) + shift) % n, encCh = up[encPos];
-      ks.push(ch === ch.toUpperCase() ? kch : kch.toLowerCase());
-      ct.push(ch === ch.toUpperCase() ? encCh : encCh.toLowerCase());
-      shifts.push(shift); ki++;
-    } else { ks.push("-"); ct.push(ch); shifts.push(-1); }
+      const kch = keyUp[ki % keyUp.length];
+      const shift = up.indexOf(kch);
+      const encPos = (up.indexOf(cu) + shift) % n;
+      const encCh = up[encPos];
+      rows.push({
+        idx: i + 1,
+        orig: ch,
+        key: (ch === ch.toUpperCase() ? kch : kch.toLowerCase()),
+        shift,
+        enc: (ch === ch.toUpperCase() ? encCh : encCh.toLowerCase()),
+      });
+      ki++;
+    } else {
+      rows.push({ idx: i + 1, orig: ch, key: "-", shift: "-", enc: ch });
+    }
   }
-  const orig = text, kstream = ks.join(""), cipher = ct.join("");
-  const header = `${"Idx".padStart(4)} ${"Orig".padStart(3).padEnd(6)} ${"Key".padStart(3).padEnd(6)} ${"Shift".padStart(5)} ${"Enc".padStart(3).padEnd(6)}`;
-  const lines = [header, "-".repeat(header.length)];
-  for (let i = 1, j = 0; j < orig.length; j++, i++) {
-    const o = orig[j].replace?.("\t","\\t").replace?.("\n","\\n") ?? orig[j];
-    const k = kstream[j], s = shifts[j] >= 0 ? String(shifts[j]) : "-", c = cipher[j].replace?.("\t","\\t").replace?.("\n","\\n") ?? cipher[j];
-    lines.push(`${String(i).padStart(4)} ${o.padStart(3).padEnd(6)} ${k.padStart(3).padEnd(6)} ${s.padStart(5)} ${c.padStart(3).padEnd(6)}`);
-  }
-  return ["Original: " + orig, "Keystream: " + kstream, "Encrypted: " + cipher, "", ...lines].join("\n");
+  return rows;
 }
-function caesar(text, shift, up, lo) {
-  const n = up.length, s = (((shift % n) + n) % n);
+function renderVigTable(rows) {
+  const tbody = byId("vig-table").querySelector("tbody");
+  tbody.innerHTML = "";
+  for (const r of rows) {
+    const tr = document.createElement("tr");
+    const tdIdx = document.createElement("td");
+    const tdOrig = document.createElement("td");
+    const tdKey = document.createElement("td");
+    const tdShift = document.createElement("td");
+    const tdEnc = document.createElement("td");
+    tdIdx.textContent = r.idx;
+    tdOrig.textContent = r.orig;
+    tdKey.textContent = r.key;
+    tdShift.textContent = r.shift;
+    tdEnc.textContent = r.enc;
+    tr.append(tdIdx, tdOrig, tdKey, tdShift, tdEnc);
+    tbody.appendChild(tr);
+  }
+}
+
+// Caesar (Cipser) — fixed undefined issue
+function caesar(text, shiftRaw, up, lo) {
+  const n = up.length;
+  let shift = 0;
+  if (typeof shiftRaw === "number") shift = shiftRaw;
+  else if (typeof shiftRaw === "string" && /^-?\d+$/.test(shiftRaw.trim())) shift = parseInt(shiftRaw.trim(), 10);
+  // Normalize shift safely
+  const s = ((shift % n) + n) % n;
   let out = "";
   for (const ch of text) {
-    if (up.includes(ch)) out += up[(up.indexOf(ch) + s) % n];
-    else if (lo.includes(ch)) out += lo[(lo.indexOf(ch) + s) % n];
-    else out += ch;
+    if (up.includes(ch)) {
+      const idx = up.indexOf(ch);
+      out += up[(idx + s) % n];
+    } else if (lo.includes(ch)) {
+      const idx = lo.indexOf(ch);
+      out += lo[(idx + s) % n];
+    } else {
+      out += ch;
+    }
   }
   return out;
 }
@@ -175,7 +207,7 @@ function polyRun(encrypt) {
   }
 }
 
-// Vigenère
+// Vigenère actions
 function vigAlph() { return (byId("vig-alpha").value === "UA") ? [UA_UP, UA_LO] : [EN_UP, EN_LO]; }
 function vigRotVal(up) {
   const s = byId("vig-rot").value.trim();
@@ -207,9 +239,9 @@ function vigGenTable() {
     const upR = rotateAlphabet(up, rot);
     const text = byId("vig-in").value;
     const key = byId("vig-key").value.trim();
-    const tbl = vigenereTable(text, key, upR);
-    byId("vig-tbl").value = `Alphabet (ROT=${rot}): ${upR}\n${tbl}`;
-    appendLog("vig-log", "Mapping table generated");
+    const rows = vigenereRows(text, key, upR);
+    renderVigTable(rows);
+    appendLog("vig-log", `Table generated (ROT=${rot}) with ${rows.length} rows`);
   } catch (e) {
     appendLog("vig-log", `Table error: ${e.message ?? e}`);
     alert(`Vigenère table: ${e.message ?? e}`);
@@ -217,24 +249,31 @@ function vigGenTable() {
 }
 function vigCopyTable() {
   try {
-    const content = byId("vig-tbl").value;
+    // Copy rendered table as TSV for convenience
+    const tbody = byId("vig-table").querySelector("tbody");
+    const lines = [];
+    lines.push(["#", "Orig", "Key", "Shift", "Enc"].join("\t"));
+    for (const tr of tbody.querySelectorAll("tr")) {
+      const cells = [...tr.querySelectorAll("td")].map(td => td.textContent);
+      lines.push(cells.join("\t"));
+    }
+    const content = lines.join("\n");
     navigator.clipboard.writeText(content);
-    appendLog("vig-log", "Table copied to clipboard");
+    appendLog("vig-log", "Table copied (TSV) to clipboard");
   } catch (e) {
     appendLog("vig-log", `Copy error: ${e.message ?? e}`);
     alert(`Copy: ${e.message ?? e}`);
   }
 }
 
-// Cipser
+// Cipser actions
 function cipRun(encrypt) {
   try {
     const up = (byId("cip-alpha").value === "UA") ? UA_UP : EN_UP;
     const lo = (byId("cip-alpha").value === "UA") ? UA_LO : EN_LO;
-    const s = byId("cip-shift").value.trim();
-    const shift = /^-?\d+$/.test(s) ? parseInt(s, 10) : 0;
+    const s = byId("cip-shift").value;
     const text = byId("cip-in").value;
-    const res = caesar(text, (encrypt ? shift : -shift), up, lo);
+    const res = caesar(text, (encrypt ? s : -s), up, lo);
     byId("cip-out").value = res;
     appendLog("cip-log", "Cipser done");
   } catch (e) {
@@ -248,7 +287,7 @@ function setupNav() {
   document.querySelectorAll("button[data-page]").forEach(btn => {
     btn.addEventListener("click", () => showPage(btn.dataset.page));
   });
-  showPage("rsa"); // show something by default so page isn’t blank
+  showPage("rsa");
 }
 function showPage(key) {
   document.querySelectorAll("section[id^='page-']").forEach(sec => sec.hidden = true);
@@ -282,6 +321,4 @@ document.addEventListener("DOMContentLoaded", () => {
   appendLog("poly-log", "Ready: Polybius");
   appendLog("vig-log", "Ready: Vigenère");
   appendLog("cip-log", "Ready: Cipser");
-  appendLog("settings-log", "Ready: Settings");
-  appendLog("about-log", "Ready: About");
 });
