@@ -1,23 +1,29 @@
+/* Theme variables that invert brightness but keep similar hues */
 :root {
-  --app-bg: #0F2027;
-  --frame-bg: #203A43;
-  --text: #ffffff;
-  --accent: #4FC3F7;
-  --btn-text: #002;
-  --border: #334;
+  /* Dark (default) — Nord-like */
+  --bg-main: #2E3440;
+  --bg-container: #3B4252;
+  --border-color: #4C566A;
+  --text-primary: #ECEFF4;
+  --text-secondary: #D8DEE9;
+  --text-quote: #A3BADC;
+  --accent-blue: #81A1C1;
+  --accent-blue-bright: #88C0D0;
 }
 
-/* body will use theme variables for global areas that adopt this stylesheet */
-body {
-  color: var(--text);
-}
-
-/* Light theme toggle */
+/* Light theme: inverse brightness while preserving hue family */
 .theme-light {
-  --app-bg: #FFF0F5;
-  --frame-bg: #E6E6FA;
-  --text: #000000;
-  --accent: #FF8A65;
-  --btn-text: #111;
-  --border: #ccc;
+  --bg-main: #ECEFF4;           /* inverse of dark text */
+  --bg-container: #D8DEE9;      /* lighter container background */
+  --border-color: #A3BADC;      /* softer border */
+  --text-primary: #2E3440;      /* inverse of dark background */
+  --text-secondary: #3B4252;    /* readable body text */
+  --text-quote: #4C566A;
+  --accent-blue: #5F81A8;       /* blue with similar hue, lighter brightness */
+  --accent-blue-bright: #6FB2C5;/* brighter accent maintaining hue */
+}
+
+/* Ensure body text always uses the mapped palette */
+body {
+  color: var(--text-secondary);
 }
