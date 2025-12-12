@@ -4,12 +4,14 @@
   <meta charset="utf-8" />
   <title>DECRYPTOINATOR LITE — Web</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Use your existing site styles -->
+  <!-- Use your existing site styles for consistent palette -->
   <link href="/style.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
-    /* Minor tweaks for form elements inside your palette */
+    /* These small helpers ensure form elements look good with your palette */
+    section[hidden] { display: none !important; } /* Actually hide sections */
+    .section-card { padding: 1rem; border: 1px solid var(--border-color); background: var(--bg-container); border-radius: 8px; }
     .form-grid { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
     .form-grid label { display: flex; gap: 0.5rem; align-items: center; color: var(--text-secondary); }
     .form-grid span { color: var(--text-primary); font-family: 'Roboto Mono', monospace; }
@@ -22,11 +24,8 @@
       font-family: 'Inter', sans-serif;
     }
     .textarea { width: 100%; }
-    .section-card { padding: 1rem; border: 1px solid var(--border-color); background: var(--bg-container); border-radius: 8px; }
     .section-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 0.75rem 0; }
     .nav-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
-    /* Make hidden sections actually hidden */
-    section[hidden] { display: none !important; }
   </style>
 </head>
 <body class="dither-background">
@@ -35,7 +34,6 @@
       <h1 class="site-title">ДЕКРИПТОІНАТОР LITE</h1>
       <div class="header-actions">
         <a href="/" class="btn">← На головну</a>
-        <a href="/cryptology.html" class="btn btn-primary">Cryptology</a>
       </div>
     </div>
   </header>
@@ -43,7 +41,7 @@
   <main class="readme-container">
     <article class="readme-content">
       <!-- Navigation -->
-      <section class="section-card fade-in-section">
+      <section class="section-card">
         <h2><i class="icon">🧭</i> Навігація</h2>
         <div class="nav-buttons">
           <button class="btn" data-page="rsa">RSA</button>
@@ -56,7 +54,7 @@
       </section>
 
       <!-- RSA -->
-      <section id="page-rsa" class="section-card fade-in-section">
+      <section id="page-rsa" class="section-card">
         <h3>RSA — Завдання 4</h3>
         <p>Відомі: d або e, p, q. Обчислити N, φ(N), e, Ek, Dk. Шифрувати M, Дешифрувати C.</p>
 
@@ -83,7 +81,7 @@
       </section>
 
       <!-- Polybius -->
-      <section id="page-poly" class="section-card fade-in-section" hidden>
+      <section id="page-poly" class="section-card" hidden>
         <h3>Квадрат Полібія</h3>
 
         <div class="form-grid">
@@ -111,7 +109,7 @@
       </section>
 
       <!-- Vigenère -->
-      <section id="page-vig" class="section-card fade-in-section" hidden>
+      <section id="page-vig" class="section-card" hidden>
         <h3>Шифр Віженера</h3>
 
         <div class="form-grid">
@@ -149,7 +147,7 @@
       </section>
 
       <!-- Cipser -->
-      <section id="page-cip" class="section-card fade-in-section" hidden>
+      <section id="page-cip" class="section-card" hidden>
         <h3>Cipser (Цезар)</h3>
 
         <label><span>Вхідний текст:</span></label>
@@ -178,7 +176,7 @@
       </section>
 
       <!-- Settings -->
-      <section id="page-settings" class="section-card fade-in-section" hidden>
+      <section id="page-settings" class="section-card" hidden>
         <h3>Налаштування</h3>
         <div class="form-grid">
           <label><span>Мова / Language:</span>
@@ -193,7 +191,7 @@
       </section>
 
       <!-- About -->
-      <section id="page-about" class="section-card fade-in-section" hidden>
+      <section id="page-about" class="section-card" hidden>
         <h3>Про автора</h3>
         <p>Автори: Крилевич Мирослав <br/>Група: УБД-32<br/>Версія: Lite-1.7.2-compact</p>
         <p>Посилання: GitHub/QmFkLVBp</p>
