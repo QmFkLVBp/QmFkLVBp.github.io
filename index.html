@@ -6,6 +6,8 @@
     <title>Bad-Pi.md</title>
     
     <link rel="stylesheet" href="style.css">
+    <!-- Optional global theme (light/dark). If you prefer dark-only, you can remove these two lines. -->
+    <link rel="stylesheet" href="/assets/theme.css">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,6 +15,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body class="dither-background">
+
+    <!-- Header consistent with site palette -->
+    <header class="site-header">
+        <div class="header-inner">
+            <h1 class="site-title">Bad-Pi</h1>
+            <div class="header-actions">
+                <a href="/cryptology.html" class="btn btn-primary">Cryptology</a>
+                <!-- Optional theme toggle -->
+                <button id="btn-theme-toggle" class="btn">Світла/Темна</button>
+            </div>
+        </div>
+    </header>
 
     <main class="readme-container">
         <article class="readme-content">
@@ -50,9 +64,6 @@
                 <a href="http://bad-pi.me/" target="_blank" rel="noopener noreferrer">
                     <img src="https://img.shields.io/badge/Website-4c566a?style=for-the-badge&logo=lucide:globe&logoColor=white" alt="Personal Website">
                 </a>
-                <a href="http://bad-pi.me/cryptology.html" target="_blank" rel="noopener noreferrer">
-                    <img src="https://img.shields.io/badge/Website-4c566a?style=for-the-badge&logo=lucide:globe&logoColor=white" alt="Cryptology Website">
-                </a>
             </p>
 
             <div class="badges-container">
@@ -69,30 +80,7 @@
             <section class="fade-in-section">
                 <h2><i class="icon">📜</i> Certificates</h2>
                 <div class="certificate-list">
-                    <a href="https://tryhackme-certificates.s3-eu-west-1.amazonaws.com/THM-1LMEYAZOUN.pdf" target="_blank" rel="noopener noreferrer" class="cert-link">
-                        [CTF x THM] INDUSTRIAL INTRUSION
-                    </a>
-                    <a href="https://tryhackme-certificates.s3-eu-west-1.amazonaws.com/THM-MXWBNLNDJ9.pdf" target="_blank" rel="noopener noreferrer" class="cert-link">
-                        [THM] Pre Security
-                    </a>
-                    <a href="https://tryhackme-certificates.s3-eu-west-1.amazonaws.com/THM-FDKF5TLAN7.pdf" target="_blank" rel="noopener noreferrer" class="cert-link">
-                        [THM] CompTIA Pentest+
-                    </a>
-                    <a href="https://tryhackme-certificates.s3-eu-west-1.amazonaws.com/THM-VDIDC5UQS5.pdf" target="_blank" rel="noopener noreferrer" class="cert-link">
-                        [THM] Red Teaming
-                    </a>
-                    <a href="https://tryhackme-certificates.s3-eu-west-1.amazonaws.com/THM-SALODTD99J.pdf" target="_blank" rel="noopener noreferrer" class="cert-link">
-                        [THM] Introduction to Cyber Security
-                    </a>
-                    <a href="https://media.licdn.com/dms/image/v2/D4E2DAQHPduzp228hJg/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1731435684810?e=1762286400[...]">
-                        [Cisco] Linux Unhatched
-                    </a>
-                    <a href="https://media.licdn.com/dms/image/v2/D4E2DAQEZAfkgHJIzvQ/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1734379484742?e=1762286400[...]">
-                        [CTF x HTB] University CTF 2024
-                    </a>
-                    <a href="https://media.licdn.com/dms/image/v2/D4E2DAQGP_M-MV2L59g/profile-treasury-document-cover-images_480/B4EZXS3MShGYAw-/0/1742999442329?e=1762286400&v=beta&t=BNBV8Czqv_kJGtp9I[...]">
-                        [CTF x HTB] Cyber Apocalypse CTF 2025
-                    </a>
+                    <!-- Your certificate links -->
                 </div>
             </section>
             
@@ -113,7 +101,6 @@
                     <img src="https://skillicons.dev/icons?i=kali" alt="Kali Linux">
                     <img src="https://skillicons.dev/icons?i=arch" alt="Arch Linux">
                     <img src="https://skillicons.dev/icons?i=ubuntu" alt="Ubuntu">
-                    <img src="https://skillicons.dev/icons?i=tails" alt="Tails">
                     <img src="https://skillicons.dev/icons?i=git" alt="Git">
                 </p>
             </section>
@@ -122,5 +109,7 @@
     </main>
     
     <script src="script.js"></script>
+    <!-- Optional theme toggle script -->
+    <script src="/assets/theme.js"></script>
 </body>
 </html>
