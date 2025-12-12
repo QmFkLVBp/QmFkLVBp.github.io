@@ -90,14 +90,13 @@ function renderVigTable(rows) {
   }
 }
 
-// Caesar (Cipser) — fixed undefined issue
-function caesar(text, shiftRaw, up, lo) {
+function caesar(text, shift, up, lo) {
   const n = up.length;
-  let shift = 0;
-  if (typeof shiftRaw === "number") shift = shiftRaw;
-  else if (typeof shiftRaw === "string" && /^-?\d+$/.test(shiftRaw.trim())) shift = parseInt(shiftRaw.trim(), 10);
-  // Normalize shift safely
-  const s = ((shift % n) + n) % n;
+  // Ensure shift is a finite integer; default to 0
+  let s = Number.isFinite(shift) ? Math.trunc(shift) : 0;
+  // Normalize into [0, n-1]
+  s = ((s % n) + n) % n;
+
   let out = "";
   for (const ch of text) {
     if (up.includes(ch)) {
@@ -107,6 +106,7 @@ function caesar(text, shiftRaw, up, lo) {
       const idx = lo.indexOf(ch);
       out += lo[(idx + s) % n];
     } else {
+      // Non-alphabetic characters (spaces, punctuation) are preserved
       out += ch;
     }
   }
