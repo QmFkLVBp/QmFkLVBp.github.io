@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <title>DECRYPTOINATOR LITE — Web</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="/assets/theme.css" rel="stylesheet" />
+  <link href="/cryptology.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="dither-background">
+  <header class="topbar container">
+    <h1 id="page-title">ДЕКРИПТОІНАТОР LITE</h1>
+    <div style="display:flex; gap:8px;">
+      <a href="/" class="btn">← На головну</a>
+      <button id="btn-theme-toggle" class="btn">Світла/Темна</button>
+    </div>
+  </header>
+
+  <div id="app" class="container app-grid">
+    <aside class="nav card">
+      <div id="logo-holder" class="logo-holder"></div>
+      <div class="nav-top">
+        <button data-page="rsa" class="nav-btn">RSA</button>
+        <button data-page="poly" class="nav-btn">Полібій</button>
+        <button data-page="vig" class="nav-btn">Віженер</button>
+        <button data-page="cip" class="nav-btn">Cipser</button>
+      </div>
+      <div class="nav-bottom">
+        <button data-page="settings" class="nav-btn">Налаштування</button>
+        <button data-page="about" class="nav-btn">Про автора</button>
+      </div>
+    </aside>
+
+    <main>
+      <!-- RSA -->
+      <section id="page-rsa" class="page card">
+        <h2 id="rsa-title">RSA — Завдання 4</h2>
+        <p id="rsa-desc">Відомі: d або e, p, q. Обчислити N, φ(N), e, Ek, Dk. Шифрувати M, Дешифрувати C.</p>
+        <div class="row">
+          <label><span id="label-d">d (приватний, optional):</span><input id="rsa-d" /></label>
+          <label><span id="label-e">e (публічний, optional):</span><input id="rsa-e" /></label>
+          <label><span id="label-p">p:</span><input id="rsa-p" /></label>
+          <label><span id="label-q">q:</span><input id="rsa-q" /></label>
+          <label><span id="label-M">M:</span><input id="rsa-M" value="2897878135" /></label>
+          <label><span id="label-C">C:</span><input id="rsa-C" value="20979746" /></label>
+        </div>
+        <div class="row">
+          <button id="btn-rsa-compute">Обчислити</button>
+          <button id="btn-rsa-enc">Зашифрувати M → C</button>
+          <button id="btn-rsa-dec">Розшифрувати C → M</button>
+        </div>
+        <h3 id="rsa-params-header">Параметри (N, φ(N), e, Ek, Dk):</h3>
+        <textarea id="rsa-params" class="box" rows="8"></textarea>
+        <h3 id="rsa-log-header">Логи:</h3>
+        <textarea id="rsa-log" class="box" rows="6"></textarea>
+      </section>
+
+      <!-- Polybius -->
+      <section id="page-poly" class="page card" hidden>
+        <h2 id="poly-title">Квадрат Полібія</h2>
+        <div class="row">
+          <label><span id="poly-alpha-label">Алфавіт (EN/UA):</span>
+            <select id="poly-alpha">
+              <option value="EN">EN</option>
+              <option value="UA">UA</option>
+            </select>
+          </label>
+        </div>
+        <label id="poly-in-label">Вхідний текст:</label>
+        <textarea id="poly-in" class="box" rows="6"></textarea>
+        <div class="row">
+          <button id="btn-poly-enc">Зашифрувати</button>
+          <button id="btn-poly-dec">Розшифрувати</button>
+        </div>
+        <label id="poly-out-label">Результат:</label>
+        <textarea id="poly-out" class="box" rows="6"></textarea>
+        <h3 id="poly-log-header">Логи:</h3>
+        <textarea id="poly-log" class="box" rows="5"></textarea>
+      </section>
+
+      <!-- Vigenère -->
+      <section id="page-vig" class="page card" hidden>
+        <h2 id="vig-title">Шифр Віженера</h2>
+        <div class="row">
+          <label><span id="vig-alpha-label">Алфавіт:</span>
+            <select id="vig-alpha">
+              <option value="UA">UA</option>
+              <option value="EN">EN</option>
+            </select>
+          </label>
+        </div>
+        <label id="vig-in-label">Вхідний текст:</label>
+        <textarea id="vig-in" class="box" rows="6"></textarea>
+        <div class="row">
+          <label><span id="vig-key-label">Ключ:</span><input id="vig-key" /></label>
+          <label><span id="vig-rot-label">ROT (зсув):</span><input id="vig-rot" value="0" /></label>
+        </div>
+        <div class="row">
+          <button id="btn-vig-enc">ЗАШИФРУВАТИ</button>
+          <button id="btn-vig-dec">РОЗШИФРУВАТИ</button>
+          <button id="btn-vig-tbl-gen">Згенерувати таблицю</button>
+          <button id="btn-vig-tbl-copy">Копіювати таблицю</button>
+        </div>
+        <label>Output:</label>
+        <textarea id="vig-out" class="box" rows="6"></textarea>
+        <h3 id="vig-tbl-label">Таблиця (оригінал | ключ | результат):</h3>
+        <textarea id="vig-tbl" class="box" rows="10"></textarea>
+        <h3 id="vig-log-header">Логи:</h3>
+        <textarea id="vig-log" class="box" rows="5"></textarea>
+      </section>
+
+      <!-- Cipser -->
+      <section id="page-cip" class="page card" hidden>
+        <h2 id="cip-title">Cipser (Цезар)</h2>
+        <label id="cip-in-label">Вхідний текст:</label>
+        <textarea id="cip-in" class="box" rows="6"></textarea>
+        <div class="row">
+          <label><span id="cip-alpha-label">Алфавіт:</span>
+            <select id="cip-alpha">
+              <option value="UA">UA</option>
+              <option value="EN">EN</option>
+            </select>
+          </label>
+          <label><span id="cip-shift-label">Зсув (ціле):</span><input id="cip-shift" value="3" /></label>
+        </div>
+        <div class="row">
+          <button id="btn-cip-enc">Зашифрувати</button>
+          <button id="btn-cip-dec">Розшифрувати</button>
+        </div>
+        <label id="cip-out-label">Результат:</label>
+        <textarea id="cip-out" class="box" rows="6"></textarea>
+        <h3 id="cip-log-header">Логи:</h3>
+        <textarea id="cip-log" class="box" rows="5"></textarea>
+      </section>
+
+      <!-- Settings -->
+      <section id="page-settings" class="page card" hidden>
+        <h2 id="settings-title">Налаштування</h2>
+        <div class="row">
+          <label>Мова / Language:
+            <select id="select-lang">
+              <option value="ua">ua</option>
+              <option value="en">en</option>
+            </select>
+          </label>
+          <label>Тема / Theme:
+            <select id="select-theme">
+              <option value="Нічна Прохолода">Нічна Прохолода</option>
+              <option value="Світанок">Світанок</option>
+            </select>
+          </label>
+        </div>
+        <h3 id="settings-log-header">Логи:</h3>
+        <textarea id="settings-log" class="box" rows="5"></textarea>
+      </section>
+
+      <!-- About -->
+      <section id="page-about" class="page card" hidden>
+        <h2 id="about-title">Про автора</h2>
+        <p id="about-text">Автори: Крилевич Мирослав <br/>Група: УБД-32<br/>Версія: Lite-1.7.2-compact</p>
+        <p id="about-links">Посилання: GitHub/QmFkLVBp</p>
+        <div id="about-logo-holder" class="logo-holder"></div>
+        <h3 id="about-log-header">Логи:</h3>
+        <textarea id="about-log" class="box" rows="5"></textarea>
+      </section>
+    </main>
+  </div>
+
+  <script src="/assets/theme.js"></script>
+  <script src="/cryptology.js"></script>
+</body>
+</html>
