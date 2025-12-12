@@ -4,9 +4,30 @@
   <meta charset="utf-8" />
   <title>DECRYPTOINATOR LITE — Web</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Use your existing site styles -->
   <link href="/style.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    /* Minor tweaks for form elements inside your palette */
+    .form-grid { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+    .form-grid label { display: flex; gap: 0.5rem; align-items: center; color: var(--text-secondary); }
+    .form-grid span { color: var(--text-primary); font-family: 'Roboto Mono', monospace; }
+    .input, .select, .textarea {
+      background-color: var(--bg-main);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      padding: 8px;
+      font-family: 'Inter', sans-serif;
+    }
+    .textarea { width: 100%; }
+    .section-card { padding: 1rem; border: 1px solid var(--border-color); background: var(--bg-container); border-radius: 8px; }
+    .section-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 0.75rem 0; }
+    .nav-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+    /* Make hidden sections actually hidden */
+    section[hidden] { display: none !important; }
+  </style>
 </head>
 <body class="dither-background">
   <header class="site-header">
@@ -14,15 +35,17 @@
       <h1 class="site-title">ДЕКРИПТОІНАТОР LITE</h1>
       <div class="header-actions">
         <a href="/" class="btn">← На головну</a>
+        <a href="/cryptology.html" class="btn btn-primary">Cryptology</a>
       </div>
     </div>
   </header>
 
   <main class="readme-container">
     <article class="readme-content">
-      <section class="fade-in-section">
-        <h2>Навігація</h2>
-        <div class="certificate-list">
+      <!-- Navigation -->
+      <section class="section-card fade-in-section">
+        <h2><i class="icon">🧭</i> Навігація</h2>
+        <div class="nav-buttons">
           <button class="btn" data-page="rsa">RSA</button>
           <button class="btn" data-page="poly">Полібій</button>
           <button class="btn" data-page="vig">Віженер</button>
@@ -33,128 +56,149 @@
       </section>
 
       <!-- RSA -->
-      <section id="page-rsa" class="fade-in-section">
+      <section id="page-rsa" class="section-card fade-in-section">
         <h3>RSA — Завдання 4</h3>
         <p>Відомі: d або e, p, q. Обчислити N, φ(N), e, Ek, Dk. Шифрувати M, Дешифрувати C.</p>
-        <div class="certificate-list">
-          <label><span>d (приватний, optional):</span><input id="rsa-d" /></label>
-          <label><span>e (публічний, optional):</span><input id="rsa-e" /></label>
-          <label><span>p:</span><input id="rsa-p" /></label>
-          <label><span>q:</span><input id="rsa-q" /></label>
-          <label><span>M:</span><input id="rsa-M" value="2897878135" /></label>
-          <label><span>C:</span><input id="rsa-C" value="20979746" /></label>
+
+        <div class="form-grid">
+          <label><span>d (приватний, optional):</span><input id="rsa-d" class="input" /></label>
+          <label><span>e (публічний, optional):</span><input id="rsa-e" class="input" /></label>
+          <label><span>p:</span><input id="rsa-p" class="input" /></label>
+          <label><span>q:</span><input id="rsa-q" class="input" /></label>
+          <label><span>M:</span><input id="rsa-M" class="input" value="2897878135" /></label>
+          <label><span>C:</span><input id="rsa-C" class="input" value="20979746" /></label>
         </div>
-        <div class="certificate-list">
+
+        <div class="section-actions">
           <button class="btn" id="btn-rsa-compute">Обчислити</button>
           <button class="btn" id="btn-rsa-enc">Зашифрувати M → C</button>
           <button class="btn" id="btn-rsa-dec">Розшифрувати C → M</button>
         </div>
+
         <h3>Параметри (N, φ(N), e, Ek, Dk):</h3>
-        <textarea id="rsa-params" rows="8" class="cert-link" style="width:100%;"></textarea>
+        <textarea id="rsa-params" rows="8" class="textarea"></textarea>
+
         <h3>Логи:</h3>
-        <textarea id="rsa-log" rows="6" class="cert-link" style="width:100%;"></textarea>
+        <textarea id="rsa-log" rows="6" class="textarea"></textarea>
       </section>
 
       <!-- Polybius -->
-      <section id="page-poly" class="fade-in-section" hidden>
+      <section id="page-poly" class="section-card fade-in-section" hidden>
         <h3>Квадрат Полібія</h3>
-        <div class="certificate-list">
+
+        <div class="form-grid">
           <label><span>Алфавіт (EN/UA):</span>
-            <select id="poly-alpha" class="cert-link">
+            <select id="poly-alpha" class="select">
               <option value="EN">EN</option>
               <option value="UA">UA</option>
             </select>
           </label>
         </div>
-        <label>Вхідний текст:</label>
-        <textarea id="poly-in" rows="6" class="cert-link" style="width:100%;"></textarea>
-        <div class="certificate-list">
+
+        <label><span>Вхідний текст:</span></label>
+        <textarea id="poly-in" rows="6" class="textarea"></textarea>
+
+        <div class="section-actions">
           <button class="btn" id="btn-poly-enc">Зашифрувати</button>
           <button class="btn" id="btn-poly-dec">Розшифрувати</button>
         </div>
-        <label>Результат:</label>
-        <textarea id="poly-out" rows="6" class="cert-link" style="width:100%;"></textarea>
+
+        <label><span>Результат:</span></label>
+        <textarea id="poly-out" rows="6" class="textarea"></textarea>
+
         <h3>Логи:</h3>
-        <textarea id="poly-log" rows="5" class="cert-link" style="width:100%;"></textarea>
+        <textarea id="poly-log" rows="5" class="textarea"></textarea>
       </section>
 
       <!-- Vigenère -->
-      <section id="page-vig" class="fade-in-section" hidden>
+      <section id="page-vig" class="section-card fade-in-section" hidden>
         <h3>Шифр Віженера</h3>
-        <div class="certificate-list">
+
+        <div class="form-grid">
           <label><span>Алфавіт:</span>
-            <select id="vig-alpha" class="cert-link">
+            <select id="vig-alpha" class="select">
               <option value="UA">UA</option>
               <option value="EN">EN</option>
             </select>
           </label>
         </div>
-        <label>Вхідний текст:</label>
-        <textarea id="vig-in" rows="6" class="cert-link" style="width:100%;"></textarea>
-        <div class="certificate-list">
-          <label><span>Ключ:</span><input id="vig-key" /></label>
-          <label><span>ROT (зсув):</span><input id="vig-rot" value="0" /></label>
+
+        <label><span>Вхідний текст:</span></label>
+        <textarea id="vig-in" rows="6" class="textarea"></textarea>
+
+        <div class="form-grid">
+          <label><span>Ключ:</span><input id="vig-key" class="input" /></label>
+          <label><span>ROT (зсув):</span><input id="vig-rot" class="input" value="0" /></label>
         </div>
-        <div class="certificate-list">
+
+        <div class="section-actions">
           <button class="btn" id="btn-vig-enc">ЗАШИФРУВАТИ</button>
           <button class="btn" id="btn-vig-dec">РОЗШИФРУВАТИ</button>
           <button class="btn" id="btn-vig-tbl-gen">Згенерувати таблицю</button>
           <button class="btn" id="btn-vig-tbl-copy">Копіювати таблицю</button>
         </div>
-        <label>Output:</label>
-        <textarea id="vig-out" rows="6" class="cert-link" style="width:100%;"></textarea>
+
+        <label><span>Output:</span></label>
+        <textarea id="vig-out" rows="6" class="textarea"></textarea>
+
         <h3>Таблиця (оригінал | ключ | результат):</h3>
-        <textarea id="vig-tbl" rows="10" class="cert-link" style="width:100%;"></textarea>
+        <textarea id="vig-tbl" rows="10" class="textarea"></textarea>
+
         <h3>Логи:</h3>
-        <textarea id="vig-log" rows="5" class="cert-link" style="width:100%;"></textarea>
+        <textarea id="vig-log" rows="5" class="textarea"></textarea>
       </section>
 
       <!-- Cipser -->
-      <section id="page-cip" class="fade-in-section" hidden>
+      <section id="page-cip" class="section-card fade-in-section" hidden>
         <h3>Cipser (Цезар)</h3>
-        <label>Вхідний текст:</label>
-        <textarea id="cip-in" rows="6" class="cert-link" style="width:100%;"></textarea>
-        <div class="certificate-list">
+
+        <label><span>Вхідний текст:</span></label>
+        <textarea id="cip-in" rows="6" class="textarea"></textarea>
+
+        <div class="form-grid">
           <label><span>Алфавіт:</span>
-            <select id="cip-alpha" class="cert-link">
+            <select id="cip-alpha" class="select">
               <option value="UA">UA</option>
               <option value="EN">EN</option>
             </select>
           </label>
-          <label><span>Зсув (ціле):</span><input id="cip-shift" value="3" /></label>
+          <label><span>Зсув (ціле):</span><input id="cip-shift" class="input" value="3" /></label>
         </div>
-        <div class="certificate-list">
+
+        <div class="section-actions">
           <button class="btn" id="btn-cip-enc">Зашифрувати</button>
           <button class="btn" id="btn-cip-dec">Розшифрувати</button>
         </div>
-        <label>Результат:</label>
-        <textarea id="cip-out" rows="6" class="cert-link" style="width:100%;"></textarea>
+
+        <label><span>Результат:</span></label>
+        <textarea id="cip-out" rows="6" class="textarea"></textarea>
+
         <h3>Логи:</h3>
-        <textarea id="cip-log" rows="5" class="cert-link" style="width:100%;"></textarea>
+        <textarea id="cip-log" rows="5" class="textarea"></textarea>
       </section>
 
       <!-- Settings -->
-      <section id="page-settings" class="fade-in-section" hidden>
+      <section id="page-settings" class="section-card fade-in-section" hidden>
         <h3>Налаштування</h3>
-        <div class="certificate-list">
-          <label>Мова / Language:
-            <select id="select-lang" class="cert-link">
+        <div class="form-grid">
+          <label><span>Мова / Language:</span>
+            <select id="select-lang" class="select">
               <option value="ua">ua</option>
               <option value="en">en</option>
             </select>
           </label>
         </div>
         <h3>Логи:</h3>
-        <textarea id="settings-log" rows="5" class="cert-link" style="width:100%;"></textarea>
+        <textarea id="settings-log" rows="5" class="textarea"></textarea>
       </section>
 
       <!-- About -->
-      <section id="page-about" class="fade-in-section" hidden>
+      <section id="page-about" class="section-card fade-in-section" hidden>
         <h3>Про автора</h3>
         <p>Автори: Крилевич Мирослав <br/>Група: УБД-32<br/>Версія: Lite-1.7.2-compact</p>
         <p>Посилання: GitHub/QmFkLVBp</p>
         <h3>Логи:</h3>
-        <textarea id="about-log" rows="5" class="cert-link" style="width:100%;"></textarea>
+        <textarea id="about-log" rows="5" class="textarea"></textarea>
       </section>
     </article>
   </main>
