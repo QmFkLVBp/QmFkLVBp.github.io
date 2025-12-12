@@ -13,7 +13,29 @@
     --dither-size: 2px;
 }
 
-/* Header */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+    padding: 2rem 1rem;
+    overflow-x: hidden;
+    background-color: var(--bg-main);
+}
+
+.dither-background {
+    background: 
+        repeating-conic-gradient(
+            from 45deg, 
+            var(--dither-color-1) 0% 25%, 
+            var(--dither-color-2) 0% 50%
+        ) 
+        0 0 / var(--dither-size) var(--dither-size);
+    filter: contrast(1.1);
+    background-attachment: fixed;
+}
+
+/* Header & buttons */
 .site-header {
     background: var(--bg-container);
     border-bottom: 2px solid var(--border-color);
@@ -37,43 +59,25 @@
     display: flex; gap: 0.5rem; align-items: center;
 }
 .btn {
-    background: var(--accent-blue);
+    background: var(--accent-blue-bright);
     color: var(--bg-main);
-    border: none;
+    border: 1px solid var(--border-color);
     padding: 8px 12px;
     border-radius: 6px;
     cursor: pointer;
     font-family: 'Inter', sans-serif;
+    text-decoration: none;
+    display: inline-block;
 }
 .btn:hover {
     opacity: 0.9;
 }
 .btn-primary {
-    background: var(--accent-blue-bright);
+    background: var(--accent-blue);
+    color: var(--bg-main);
 }
 
-body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    margin: 0;
-    padding: 2rem 1rem;
-    overflow-x: hidden;
-    background-color: var(--bg-main);
-}
-
-.dither-background {
-    background: 
-        repeating-conic-gradient(
-            from 45deg, 
-            var(--dither-color-1) 0% 25%, 
-            var(--dither-color-2) 0% 50%
-        ) 
-        0 0 / var(--dither-size) var(--dither-size);
-    filter: contrast(1.1);
-    background-attachment: fixed;
-}
-
+/* Container & content */
 .readme-container {
     max-width: 900px;
     margin: 0 auto;
@@ -84,7 +88,6 @@ body {
     overflow: hidden;
     position: relative;
 }
-
 .readme-container::before {
     content: '';
     position: absolute;
@@ -92,25 +95,22 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB2aWR0aD0iNCIgaGVpZ2h0PSI0IiB2aWV3Qm94PSIwIDAgNCA0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9IiM5ZTRiNWUiIGZpbGwtb3BhY2l0eT0[...]
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB2aWR0aD0iNCIgaGVpZ2h0PSI0IiB2aWV3Qm94PSIwIDAgNCA0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9IiM5ZTRiNWUiIGZpbGwtb3BhY2l0eT0[...]');
     background-size: 3px 3px;
     opacity: 0.1;
     pointer-events: none;
     z-index: 1;
 }
-
 .readme-content {
     padding: 2rem 3rem;
     position: relative;
     z-index: 2;
 }
-
 @media (max-width: 768px) {
-    .readme-content {
-        padding: 1.5rem;
-    }
+    .readme-content { padding: 1.5rem; }
 }
 
+/* Typography */
 h1, h2, h3, h4 {
     font-family: 'Roboto Mono', monospace;
     color: var(--text-primary);
@@ -119,50 +119,22 @@ h1, h2, h3, h4 {
     padding-bottom: 0.4em;
     border-bottom: 2px solid var(--border-color);
 }
-
 h2 {
     font-family: 'Press Start 2P', cursive;
     font-size: 1.25rem;
     text-transform: uppercase;
     color: var(--accent-blue-bright);
 }
+h3 { font-size: 1.4rem; border-bottom: none; }
+h3 img { vertical-align: middle; }
 
-h3 { 
-    font-size: 1.4rem; 
-    border-bottom: none; 
-}
-h3 img { 
-    vertical-align: middle; 
-}
+p { margin-bottom: 1rem; }
+strong { color: var(--accent-blue-bright); }
 
-p {
-    margin-bottom: 1rem;
-}
-
-strong {
-    color: var(--accent-blue-bright);
-}
-
-ul {
-    list-style-type: none;
-    padding-left: 1.5rem;
-    margin-bottom: 1rem;
-}
-
-li {
-    position: relative;
-    padding-left: 1.5rem;
-    margin-bottom: 0.5rem;
-}
-
-li::before {
-    position: absolute;
-    left: 0;
-    top: 0;
-    color: var(--accent-blue-bright);
-    font-size: 1.2em;
-}
-
+/* Lists & badges */
+ul { list-style-type: none; padding-left: 1.5rem; margin-bottom: 1rem; }
+li { position: relative; padding-left: 1.5rem; margin-bottom: 0.5rem; }
+li::before { position: absolute; left: 0; top: 0; color: var(--accent-blue-bright); font-size: 1.2em; }
 ul li:nth-child(1)::before { content: '🌱'; }
 ul li:nth-child(2)::before { content: '🛠️'; }
 ul li:nth-child(3)::before { content: '📫'; }
@@ -192,11 +164,7 @@ a {
     text-decoration: none;
     transition: color 0.3s ease, transform 0.2s ease;
 }
-
-a:hover {
-    color: var(--accent-blue-bright);
-    text-decoration: underline;
-}
+a:hover { color: var(--accent-blue-bright); text-decoration: underline; }
 
 .badges-container {
     text-align: center;
@@ -207,21 +175,16 @@ a:hover {
     align-items: center;
     gap: 0.5rem;
 }
-
 .badges-container img {
     margin: 0.25rem;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     border-radius: 4px;
 }
-
 .badges-container a:hover img {
     transform: scale(1.05);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
-
-.platform-badge {
-    height: 40px;
-}
+.platform-badge { height: 40px; }
 
 .certificate-list {
     display: flex;
@@ -230,7 +193,6 @@ a:hover {
     gap: 0.75rem;
     margin-top: 1rem;
 }
-
 .cert-link {
     display: inline-block;
     background-color: var(--bg-main);
@@ -243,7 +205,6 @@ a:hover {
     text-decoration: none;
     transition: all 0.2s ease;
 }
-
 .cert-link:hover {
     background-color: var(--accent-blue);
     color: var(--bg-main);
@@ -253,13 +214,6 @@ a:hover {
     text-decoration: none;
 }
 
-.fade-in-section {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-
-.fade-in-section.is-visible {
-    opacity: 1;
-    transform: translateY(0);
-}
+/* Animations */
+.fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+.fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
