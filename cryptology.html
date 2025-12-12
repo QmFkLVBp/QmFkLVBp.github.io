@@ -4,12 +4,11 @@
   <meta charset="utf-8" />
   <title>DECRYPTOINATOR LITE — Web</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Use your site styles for consistent palette -->
   <link href="/style.css" rel="stylesheet" />
+  <link href="/assets/theme.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
-    /* Helpers to match index visual style and ensure visibility */
     section[hidden] { display: none !important; }
     .section-card { padding: 1rem; border: 1px solid var(--border-color); background: var(--bg-container); border-radius: 8px; }
     .form-grid { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
@@ -26,6 +25,28 @@
     .textarea { width: 100%; }
     .section-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 0.75rem 0; }
     .nav-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+    /* Vigenère table styling */
+    .vig-table-wrap { overflow-x: auto; }
+    table.vig-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--bg-main);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-color);
+    }
+    table.vig-table th, table.vig-table td {
+      border: 1px solid var(--border-color);
+      padding: 6px 8px;
+      text-align: center;
+      font-family: 'Roboto Mono', monospace;
+    }
+    table.vig-table th {
+      background: var(--bg-container);
+      color: var(--text-primary);
+      position: sticky;
+      top: 0;
+    }
+    .mono { font-family: 'Roboto Mono', monospace; }
   </style>
 </head>
 <body class="dither-background">
@@ -34,7 +55,6 @@
       <h1 class="site-title">ДЕКРИПТОІНАТОР LITE</h1>
       <div class="header-actions">
         <a href="/" class="btn">← На головну</a>
-        <!-- Optional theme toggle for consistency -->
         <button id="btn-theme-toggle" class="btn">Світла/Темна</button>
       </div>
     </div>
@@ -50,8 +70,6 @@
           <button class="btn" data-page="poly">Полібій</button>
           <button class="btn" data-page="vig">Віженер</button>
           <button class="btn" data-page="cip">Cipser</button>
-          <button class="btn" data-page="settings">Налаштування</button>
-          <button class="btn" data-page="about">Про автора</button>
         </div>
       </section>
 
@@ -76,10 +94,10 @@
         </div>
 
         <h3>Параметри (N, φ(N), e, Ek, Dk):</h3>
-        <textarea id="rsa-params" rows="8" class="textarea"></textarea>
+        <textarea id="rsa-params" rows="8" class="textarea mono"></textarea>
 
         <h3>Логи:</h3>
-        <textarea id="rsa-log" rows="6" class="textarea"></textarea>
+        <textarea id="rsa-log" rows="6" class="textarea mono"></textarea>
       </section>
 
       <!-- Polybius -->
@@ -96,7 +114,7 @@
         </div>
 
         <label><span>Вхідний текст:</span></label>
-        <textarea id="poly-in" rows="6" class="textarea"></textarea>
+        <textarea id="poly-in" rows="6" class="textarea mono"></textarea>
 
         <div class="section-actions">
           <button class="btn" id="btn-poly-enc">Зашифрувати</button>
@@ -104,10 +122,10 @@
         </div>
 
         <label><span>Результат:</span></label>
-        <textarea id="poly-out" rows="6" class="textarea"></textarea>
+        <textarea id="poly-out" rows="6" class="textarea mono"></textarea>
 
         <h3>Логи:</h3>
-        <textarea id="poly-log" rows="5" class="textarea"></textarea>
+        <textarea id="poly-log" rows="5" class="textarea mono"></textarea>
       </section>
 
       <!-- Vigenère -->
@@ -124,11 +142,11 @@
         </div>
 
         <label><span>Вхідний текст:</span></label>
-        <textarea id="vig-in" rows="6" class="textarea"></textarea>
+        <textarea id="vig-in" rows="6" class="textarea mono"></textarea>
 
         <div class="form-grid">
-          <label><span>Ключ:</span><input id="vig-key" class="input" /></label>
-          <label><span>ROT (зсув):</span><input id="vig-rot" class="input" value="0" /></label>
+          <label><span>Ключ:</span><input id="vig-key" class="input mono" /></label>
+          <label><span>ROT (зсув):</span><input id="vig-rot" class="input mono" value="0" /></label>
         </div>
 
         <div class="section-actions">
@@ -138,14 +156,23 @@
           <button class="btn" id="btn-vig-tbl-copy">Копіювати таблицю</button>
         </div>
 
-        <label><span>Output:</span></label>
-        <textarea id="vig-out" rows="6" class="textarea"></textarea>
-
-        <h3>Таблиця (оригінал | ключ | результат):</h3>
-        <textarea id="vig-tbl" rows="10" class="textarea"></textarea>
+        <div class="vig-table-wrap">
+          <table id="vig-table" class="vig-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Orig</th>
+                <th>Key</th>
+                <th>Shift</th>
+                <th>Enc</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
 
         <h3>Логи:</h3>
-        <textarea id="vig-log" rows="5" class="textarea"></textarea>
+        <textarea id="vig-log" rows="5" class="textarea mono"></textarea>
       </section>
 
       <!-- Cipser -->
@@ -153,16 +180,16 @@
         <h3>Cipser (Цезар)</h3>
 
         <label><span>Вхідний текст:</span></label>
-        <textarea id="cip-in" rows="6" class="textarea"></textarea>
+        <textarea id="cip-in" rows="6" class="textarea mono"></textarea>
 
         <div class="form-grid">
           <label><span>Алфавіт:</span>
-            <select id="cip-alpha" class="select">
+            <select id="cip-alpha" class="select mono">
               <option value="UA">UA</option>
               <option value="EN">EN</option>
             </select>
           </label>
-          <label><span>Зсув (ціле):</span><input id="cip-shift" class="input" value="3" /></label>
+          <label><span>Зсув (ціле):</span><input id="cip-shift" class="input mono" value="3" /></label>
         </div>
 
         <div class="section-actions">
@@ -171,40 +198,15 @@
         </div>
 
         <label><span>Результат:</span></label>
-        <textarea id="cip-out" rows="6" class="textarea"></textarea>
+        <textarea id="cip-out" rows="6" class="textarea mono"></textarea>
 
         <h3>Логи:</h3>
-        <textarea id="cip-log" rows="5" class="textarea"></textarea>
-      </section>
-
-      <!-- Settings -->
-      <section id="page-settings" class="section-card" hidden>
-        <h3>Налаштування</h3>
-        <div class="form-grid">
-          <label><span>Мова / Language:</span>
-            <select id="select-lang" class="select">
-              <option value="ua">ua</option>
-              <option value="en">en</option>
-            </select>
-          </label>
-        </div>
-        <h3>Логи:</h3>
-        <textarea id="settings-log" rows="5" class="textarea"></textarea>
-      </section>
-
-      <!-- About -->
-      <section id="page-about" class="section-card" hidden>
-        <h3>Про автора</h3>
-        <p>Автори: Крилевич Мирослав <br/>Група: УБД-32<br/>Версія: Lite-1.7.2-compact</p>
-        <p>Посилання: GitHub/QmFkLVBp</p>
-        <h3>Логи:</h3>
-        <textarea id="about-log" rows="5" class="textarea"></textarea>
+        <textarea id="cip-log" rows="5" class="textarea mono"></textarea>
       </section>
     </article>
   </main>
 
   <script src="/cryptology.js"></script>
-  <!-- Optional theme toggle script -->
   <script src="/assets/theme.js"></script>
 </body>
 </html>
