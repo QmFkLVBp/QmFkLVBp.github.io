@@ -25,28 +25,21 @@
     .textarea { width: 100%; }
     .section-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 0.75rem 0; }
     .nav-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
-    /* Vigenère table styling */
-    .vig-table-wrap { overflow-x: auto; }
+    .mono { font-family: 'Roboto Mono', monospace; }
+
+    /* Vigenère nice table */
+    .vig-table-wrap { overflow-x: auto; margin-top: 0.75rem; }
     table.vig-table {
-      width: 100%;
-      border-collapse: collapse;
-      background: var(--bg-main);
-      color: var(--text-secondary);
+      width: 100%; border-collapse: collapse;
+      background: var(--bg-main); color: var(--text-secondary);
       border: 1px solid var(--border-color);
     }
     table.vig-table th, table.vig-table td {
       border: 1px solid var(--border-color);
-      padding: 6px 8px;
-      text-align: center;
+      padding: 6px 8px; text-align: center;
       font-family: 'Roboto Mono', monospace;
     }
-    table.vig-table th {
-      background: var(--bg-container);
-      color: var(--text-primary);
-      position: sticky;
-      top: 0;
-    }
-    .mono { font-family: 'Roboto Mono', monospace; }
+    table.vig-table th { background: var(--bg-container); color: var(--text-primary); }
   </style>
 </head>
 <body class="dither-background">
@@ -156,6 +149,7 @@
           <button class="btn" id="btn-vig-tbl-copy">Копіювати таблицю</button>
         </div>
 
+        <!-- HTML table instead of plain text -->
         <div class="vig-table-wrap">
           <table id="vig-table" class="vig-table">
             <thead>
@@ -189,7 +183,7 @@
               <option value="EN">EN</option>
             </select>
           </label>
-          <label><span>Зсув (ціле):</span><input id="cip-shift" class="input mono" value="3" /></label>
+          <label><span>Зсув (ціле):</span><input id="cip-shift" class="input mono" value="16" /></label>
         </div>
 
         <div class="section-actions">
